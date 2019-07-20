@@ -1,0 +1,13 @@
+/* #bird-game {
+  padding-left: 25%;
+  margin: 0 auto;
+} */
+
+.title{
+  text-align: center;
+}
+
+.canvas-container{
+  display: flex;
+  justify-content: center;
+}

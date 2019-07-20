@@ -26,7 +26,12 @@ export default class FlappyBird {
     this.ctx.canvas.addEventListener("mousedown", this.click.bind(this));
   }
 
-  animate() {
+  sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+
+  async animate() {
     this.level.animate(this.ctx);
     this.bird.animate(this.ctx);
 
