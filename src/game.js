@@ -10,15 +10,20 @@ export default class FlappyBird {
   }
 
   gameOver() {
-    // return this.level.collide(this.bird)
+    if (this.level.collideWith(this.bird.getBounds())){
+      this.running = false;
+      console.log("GAME OVER")
+      return true;
+    } else {
+      return false;
+    }
   }
 
   click() {
-    // if the game hasn't started yet, play
-    if (!this.running) {
+    // if the game hasn't started yet or isn't over, play
+    if (!this.running && !this.gameOver()) {
       this.play(); 
     }
-    
     this.bird.flap();
   }
 

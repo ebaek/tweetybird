@@ -36,7 +36,6 @@ export default class Level {
   }
 
   drawPipes(ctx){
-    debugger
     this.pipes.forEach( (pipe) => {
         this.drawPipePair(ctx, pipe["pos"], pipe["height"]);
     })
@@ -72,22 +71,34 @@ export default class Level {
   }
 
   drawBackground(ctx) {
-    // ctx.fillStyle = "skyblue";
-
-    // const background = new Image();
-    // background.src = "./images/background-night.png";
-    ctx.drawImage(background,0,0);
-    ctx.fillRect(0, 0, this.dimensions.width, this.dimensions.height);
+    const background = new Image();
+    background.src = "./images/background-night.png";
+    ctx.drawImage(background, 0, 0, this.dimensions.width, this.dimensions.height);
   }
 
   animate(ctx) {
     this.drawBackground(ctx);
     this.drawPipes(ctx);
     this.movePipes();
-    debugger
   }
 
-  collideWith(bird) {
+  collideWith(birdBounds) {
+    for(let i = 0; i < this.pipes.length; i++) {
+      const birdTopLeft = birdBounds[0];
+      const birdBottomRight = birdBounds[1];
 
+      const topPipeHeightBounds = [0, this.pipes[i]["height"]];
+      const pipeWidthBounds = [this.pipes[i]["pos"], this.pipes[i]["pos"] + CONSTANTS.PIPE_WIDTH];
+      const bottomHeightBounds = [this.pipes[i]["height"] + CONSTANTS.GAP, this.dimensions.height];
+
+      if(birdTopLeft <= topPipeHeightBounds[0] || birdBottomRight >= this.dimensions.height) {
+        return true;
+      } else if (birdTopLeft >= pipeWidthBounds[0] || birdTopLeft <= pipeWidthBounds[1]) {
+        if (birdTopLeft <= topPipeHeightBounds[0] || birdBottomRight >= bottomHeightBounds[1]) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 }
