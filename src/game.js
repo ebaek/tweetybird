@@ -10,9 +10,8 @@ export default class FlappyBird {
   }
 
   gameOver() {
-    if (this.level.collideWith(this.bird.getBounds())){
+    if (this.level.gameOver(this.bird.getBounds())){
       this.running = false;
-      console.log("GAME OVER")
       return true;
     } else {
       return false;
@@ -21,7 +20,7 @@ export default class FlappyBird {
 
   click() {
     // if the game hasn't started yet or isn't over, play
-    if (!this.running && !this.gameOver()) {
+    if (!this.running) {
       this.play(); 
     }
     this.bird.flap();
@@ -35,11 +34,15 @@ export default class FlappyBird {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  async animate() {
-    this.level.animate(this.ctx);
-    this.bird.animate(this.ctx);
-
-    requestAnimationFrame(this.animate.bind(this));
+  animate() {
+    if (!this.gameOver()){
+      this.level.animate(this.ctx);
+      this.bird.animate(this.ctx);
+      requestAnimationFrame(this.animate.bind(this));
+    } else {
+      // alert("game over!")
+    }
+    
   }
 
   restart() {
