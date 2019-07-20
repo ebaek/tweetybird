@@ -4,37 +4,68 @@ const CONSTANTS = {
   PIPE_WIDTH: 80,
   PLAYABLE: 640,
   CANVAS_WIDTH: 480,
-  MIN_HEIGHT: 50,
+  MIN_PIPE_HEIGHT: 50,
+  PIPE_BETWEEN_DIST: 220,
+  PIPE_SPEED: 2,
 }
 
 export default class Level {
   constructor(dimensions) {
     this.dimensions = dimensions;
 
+    // set the initial distance between pipes
+    let firstPipePos = 0;
+    let secondPipePos = firstPipePos + CONSTANTS.PIPE_WIDTH + CONSTANTS.PIPE_BETWEEN_DIST;
+    let thirdPipePos = secondPipePos + CONSTANTS.PIPE_WIDTH + CONSTANTS.PIPE_BETWEEN_DIST;
+
+    // set of pipes
+    this.pipes = [{pos: firstPipePos, height: this.setPipeHeight()}, 
+      {pos: secondPipePos, height: this.setPipeHeight()}, 
+      {pos: thirdPipePos, height: this.setPipeHeight()}]
   }
 
-  drawPipe(ctx, x) {
+  drawPipePair(ctx, pipePos, height) {
     ctx.fillStyle = "green";
-    const firstPipeHeight = this.setPipeHeight();
-    ctx.fillRect(x, 0, CONSTANTS.PIPE_WIDTH, firstPipeHeight);
     
-    // ctx.fillStyle = "green";
-    const secondPipePosition = 150 + firstPipeHeight;
-    ctx.fillRect(x, secondPipePosition, CONSTANTS.PIPE_WIDTH, CONSTANTS.PLAYABLE - secondPipePosition);
-    debugger
+    //draw top pipe
+    ctx.fillRect(pipePos, 0, CONSTANTS.PIPE_WIDTH, height);
+    
+    //draw bottom pipe
+    const secondPipePosition = CONSTANTS.GAP + height;
+    ctx.fillRect(pipePos, secondPipePosition, CONSTANTS.PIPE_WIDTH, CONSTANTS.PLAYABLE - secondPipePosition);
   }
 
-  generateRandPos() {
-    return Math.random(0,1) * CONSTANTS.CANVAS_WIDTH;
-  } 
+  drawPipes(ctx){
+    debugger
+    this.pipes.forEach( (pipe) => {
+        this.drawPipePair(ctx, pipe["pos"], pipe["height"]);
+    })
+  }
+
+  movePipes(){
+    this.pipes.forEach( (pipe) => {
+      pipe["pos"] -= CONSTANTS.PIPE_SPEED;
+      if(pipe["pos"] === 0) {
+        this.pipes.unshift();
+        this.generatePipe();
+      }
+    })
+  }
+
+  generatePipe(){
+    const lastPipe = this.pipes[this.pipes.length - 1];
+    const newPipePos = lastPipe["pos"] + CONSTANTS.PIPE_WIDTH + CONSTANTS.PIPE_BETWEEN_DIST;
+    const newPipeHeight = this.setPipeHeight();
+    this.pipes.push({pos: newPipePos, height: newPipeHeight});
+  }
 
   setPipeHeight(){
     let height = Math.random(0,1) * CONSTANTS.PLAYABLE;
 
-    if(height < CONSTANTS.MIN_HEIGHT) {
-      height = CONSTANTS.MIN_HEIGHT;
-    } else if(height > (CONSTANTS.PLAYABLE - CONSTANTS.MIN_HEIGHT - CONSTANTS.GAP)){
-      height = CONSTANTS.PLAYABLE - CONSTANTS.MIN_HEIGHT - CONSTANTS.GAP;
+    if(height < CONSTANTS.MIN_PIPE_HEIGHT) {
+      height = CONSTANTS.MIN_PIPE_HEIGHT;
+    } else if(height > (CONSTANTS.PLAYABLE - CONSTANTS.MIN_PIPE_HEIGHT - CONSTANTS.GAP)){
+      height = CONSTANTS.PLAYABLE - CONSTANTS.MIN_PIPE_HEIGHT - CONSTANTS.GAP;
     } 
 
     return height;
@@ -47,12 +78,12 @@ export default class Level {
 
   animate(ctx) {
     this.drawBackground(ctx);
+    this.drawPipes(ctx);
+    this.movePipes();
     debugger
-    this.drawPipe(ctx, this.generateRandPos());
   }
 
   collide(bird) {
-
     //check if bird is in frame
     if (bird.pos_y > this.dimensions.height || bird.pos_y < 0) {
       return false;

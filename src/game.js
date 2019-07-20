@@ -30,13 +30,11 @@ export default class FlappyBird {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-
   async animate() {
     this.level.animate(this.ctx);
     this.bird.animate(this.ctx);
 
     requestAnimationFrame(this.animate.bind(this));
-  
   }
 
   restart() {
