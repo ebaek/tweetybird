@@ -1,13 +1,21 @@
-/* #bird-game {
-  padding-left: 25%;
-  margin: 0 auto;
-} */
-
 .title{
   text-align: center;
+  color: whitesmoke;
+  font-family: 'Electrolize', sans-serif;
 }
 
 .canvas-container{
   display: flex;
   justify-content: center;
 }
+
+body {
+  background-color: black;
+}
+
+/* #bird-game {
+  background-image: url(./images/background-night.png);
+  background-size:     cover;                      
+  background-repeat:   no-repeat;
+  background-position: center center;
+} */

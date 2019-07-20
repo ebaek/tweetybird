@@ -72,7 +72,11 @@ export default class Level {
   }
 
   drawBackground(ctx) {
-    ctx.fillStyle = "skyblue";
+    // ctx.fillStyle = "skyblue";
+
+    // const background = new Image();
+    // background.src = "./images/background-night.png";
+    ctx.drawImage(background,0,0);
     ctx.fillRect(0, 0, this.dimensions.width, this.dimensions.height);
   }
 
@@ -83,13 +87,7 @@ export default class Level {
     debugger
   }
 
-  collide(bird) {
-    //check if bird is in frame
-    if (bird.pos_y > this.dimensions.height || bird.pos_y < 0) {
-      return false;
-    } else {
-      return true;
-    }
+  collideWith(bird) {
 
   }
 }
