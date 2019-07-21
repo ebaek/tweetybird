@@ -83,36 +83,50 @@ export default class Level {
     ctx.drawImage(background, 0, 0, this.dimensions.width, this.dimensions.height);
   }
 
-  animate(ctx) {
-    this.drawBackground(ctx);
-    this.drawPipes(ctx);
-    this.movePipes();
-  }
+  // animate(ctx) {
+  //   this.drawBackground(ctx);
+  //   this.drawPipes(ctx);
+  //   this.movePipes();
+  // }
 
   collideWith(birdBounds) {
     for(let i = 0; i < this.pipes.length; i++) {
-      
-      const birdTopLeft = birdBounds[0];
-      const birdBottomRight = birdBounds[1];
-      
-      const topPipeHeightBounds = [0, this.pipes[i]["height"]];
-      const pipeWidthBounds = [this.pipes[i]["pos"], this.pipes[i]["pos"] + CONSTANTS.PIPE_WIDTH];
-      const bottomHeightBounds = [this.pipes[i]["height"] + CONSTANTS.GAP, this.dimensions.height];
-      
-      if (birdTopLeft[0] >= pipeWidthBounds[0] && birdTopLeft[0] <= pipeWidthBounds[1]) {
-        if (birdTopLeft[1] <= topPipeHeightBounds[1] || birdBottomRight[1] >= bottomHeightBounds[0]) {
-          return true;
-        }
+      if(this.collideWithPipe(birdBounds, i)) return true;
+    }
+    return false;
+  }
+
+  collideWithPipe(birdBounds, i) {
+    const birdTopLeft = birdBounds[0];
+    const birdBottomRight = birdBounds[1];
+
+    const topPipeHeightBounds = [0, this.pipes[i]["height"]];
+    const pipeWidthBounds = [this.pipes[i]["pos"], this.pipes[i]["pos"] + CONSTANTS.PIPE_WIDTH];
+    const bottomHeightBounds = [this.pipes[i]["height"] + CONSTANTS.GAP, this.dimensions.height];
+
+    if (birdTopLeft[0] >= pipeWidthBounds[0] && birdTopLeft[0] <= pipeWidthBounds[1]) {
+      if (birdTopLeft[1] <= topPipeHeightBounds[1] || birdBottomRight[1] >= bottomHeightBounds[0]) {
+        return true;
       }
     }
     return false;
   }
 
-  gameOver(birdBounds) {
-    const birdTopLeft = birdBounds[0];
-    const birdBottomRight = birdBounds[1];
+  pastPipe(birdBounds) {
+    const birdXCoord = birdBounds[0][0];
 
-    if (this.collideWith(birdBounds) || birdTopLeft[1] <= 0 || birdBottomRight[1] >= this.dimensions.height) {
+    if(!this.collideWithPipe(birdBounds, 0) && birdXCoord > this.pipes[0]["pos"]) {
+      return true; 
+    } else {
+      return false;
+    }
+  }
+
+  gameOver(birdBounds) {
+    const birdTopRight = birdBounds[0];
+    const birdBottomMid = birdBounds[1];
+
+    if (this.collideWith(birdBounds) || birdTopRight[1] <= 0 || birdBottomMid[1] >= this.dimensions.height) {
       return true;
     } else {
       return false;
