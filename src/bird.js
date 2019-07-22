@@ -2,7 +2,7 @@
 const CONSTANTS = {
     BIRD_WIDTH: 100,
     BIRD_HEIGHT: 75,
-    GRAVITY: 0.3,
+    GRAVITY: 0.4,
     FLAP_VELOCITY: -6,
     TERMINAL_VEL: 12,
     SPRITE_WIDTH: 929,
@@ -12,7 +12,7 @@ const CONSTANTS = {
 export default class Bird {
     constructor(dimensions) {
         this.dimensions = dimensions;
-        this.pos_x = this.dimensions.width / 3;
+        this.pos_x = this.dimensions.width / 4;
         this.pos_y = this.dimensions.height / 2;
         this.velocity = 0;
 
@@ -32,7 +32,6 @@ export default class Bird {
     }
 
     move() {
-        // console.log('velocity: ', this.velocity);
         // position of bird increases by current velocity
         this.pos_y += this.velocity;
 

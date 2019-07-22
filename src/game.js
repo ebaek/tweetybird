@@ -46,7 +46,6 @@ export default class TweetyBird {
   }
 
   clickListener() {
-    // debugger
     this.ctx.canvas.addEventListener('click', (evt) => {
       const mousePos = this.getMousePos(evt);
 
@@ -117,12 +116,16 @@ export default class TweetyBird {
     //game over
     this.ctx.font = '58px Bungee Shade';
     this.ctx.fillStyle = 'black';
-    this.ctx.fillText("Game Over", 45, 175);
+    this.ctx.fillText("Game Over", 45, 120);
 
     //restart button
     const restartButton = new Image();
-    restartButton.src = "./images/button.png"
+    restartButton.src = "./images/button.png";
     this.ctx.drawImage(restartButton, this.restartButton["x"], this.restartButton["y"], this.restartButton["width"], this.restartButton["height"]);
+
+    //draw final score
+    this.ctx.font = '58px Bungee Shade';
+    this.ctx.fillText(this.currentScore, this.dimensions.width / 2 - 20, 200);
   }
 
   // fix restart after game over 
