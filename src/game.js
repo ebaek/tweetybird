@@ -1,6 +1,7 @@
 import Bird from './bird';
 import Level from './level';
 
+
 export default class TweetyBird {
   constructor(canvas){
     this.ctx = canvas.getContext("2d");
@@ -10,6 +11,8 @@ export default class TweetyBird {
 
     this.frame = 0
     this.frames = 0;
+
+    this.restartButton = { x: 200, y: 250, width: 90, height: 50 }
 
     this.restart();
     this.clickListener();
@@ -25,18 +28,34 @@ export default class TweetyBird {
     }
   }
 
-  // test this 
-  drawGameOver(){
-    ctx.font = '58px Bungee Shade';
-    ctx.fillText("Game Over", this.dimensions.width / 2 - 20, 100);
-  }
-
   click() {
     this.bird.flap(); 
   }
 
+  getMousePos(event) {
+    var rect = this.ctx.canvas.getBoundingClientRect();
+    return {
+      x: event.clientX - rect.left,
+      y: event.clientY - rect.top
+    };
+  }
+
+  isInside(pos, rect) {
+    return pos.x > rect.x && pos.x < rect.x + rect.width && pos.y < rect.y + rect.height && pos.y > rect.y;
+  }
+
   clickListener() {
-    this.ctx.canvas.addEventListener("mousedown", this.click.bind(this));
+    debugger
+    this.ctx.canvas.addEventListener('click', (evt) => {
+      const mousePos = this.getMousePos(evt);
+
+      if (this.isInside(mousePos, this.restartButton) && this.gameOver()) {
+        this.restart();
+      } else {
+        this.click();
+      }
+    }, false);
+
   }
 
   draw(){
@@ -66,8 +85,10 @@ export default class TweetyBird {
 
   scoreUpdate() {
     let birdPos = this.bird.getBounds()[0][0];
-    let firstPipe = this.level.pipes[0]["pos"];
-    if(birdPos === firstPipe ){
+
+    //update the score when the bird flies a bit past the start of the pipe
+    let firstPipeEnd = this.level.pipes[0]["pos"] + 40;
+    if(birdPos === firstPipeEnd ){
       this.currentScore++;
     }
   }
@@ -77,16 +98,41 @@ export default class TweetyBird {
       this.update();
       this.draw();
       this.frames++;
-      requestAnimationFrame(this.loop.bind(this));
-    } 
+    } else {
+      this.drawGameOver();
+    }
+    requestAnimationFrame(this.loop.bind(this));
+  }
+
+  // test this 
+  drawGameOver() {
+    //white background, blue border box
+    this.ctx.strokeStyle = "#71C5CF";
+    this.ctx.fillStyle = 'white';
+    this.ctx.lineWidth = 10;
+    this.ctx.rect(37, 50, this.dimensions.width - 60, this.dimensions.height/2 - 50);
+    this.ctx.stroke();
+    this.ctx.fill();
+
+    //game over
+    this.ctx.font = '58px Bungee Shade';
+    this.ctx.fillStyle = 'black';
+    this.ctx.fillText("Game Over", 45, 175);
+
+    //restart button
+    const restartButton = new Image();
+    restartButton.src = "./images/button.png"
+    this.ctx.drawImage(restartButton, this.restartButton["x"], this.restartButton["y"], this.restartButton["width"], this.restartButton["height"]);
   }
 
   restart() {
-    this.running = false;
+    this.ctx.clearRect(0, 0, this.dimensions.width, this.dimensions.height);
+    this.running = true;
+    this.currentScore = 0;
 
+    debugger
     this.level = new Level(this.dimensions);
     this.bird = new Bird(this.dimensions);
-    this.loop();
   }
 
 }
