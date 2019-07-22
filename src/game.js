@@ -1,16 +1,18 @@
 import Bird from './bird';
 import Level from './level';
 
-export default class FlappyBird {
+export default class TweetyBird {
   constructor(canvas){
     this.ctx = canvas.getContext("2d");
     this.dimensions = { width: canvas.width, height: canvas.height };
+
     this.currentScore = 0;
+
     this.frame = 0
     this.frames = 0;
-    this.clickListener();
+
     this.restart();
-    
+    this.clickListener();
   }
 
   gameOver() {
@@ -23,12 +25,13 @@ export default class FlappyBird {
     }
   }
 
+  // test this 
+  drawGameOver(){
+    ctx.font = '58px Bungee Shade';
+    ctx.fillText("Game Over", this.dimensions.width / 2 - 20, 100);
+  }
+
   click() {
-    // if the game hasn't started yet or isn't over, play
-    if (!this.running || !this.level.gameOver(this.bird.getBounds())) {
-      this.loop();
-      
-    }
     this.bird.flap(); 
   }
 
@@ -36,36 +39,46 @@ export default class FlappyBird {
     this.ctx.canvas.addEventListener("mousedown", this.click.bind(this));
   }
 
-  // animate() {
-  //   if (!this.gameOver()){
-      
-  //     this.level.animate(this.ctx);
-  //     this.bird.animate(this.ctx);
-  //     this.printScore(this.ctx);
-  //     requestAnimationFrame(this.animate.bind(this));
-
-  //   } else {
-  //     // alert("game over!")
-  //   }
-  // }
-
   draw(){
     this.level.drawBackground(this.ctx);
     this.level.drawPipes(this.ctx);
-    debugger
     this.bird.drawBird(this.ctx, this.frame);
+    this.drawScore(this.ctx, this.currentScore);
+  }
+
+  drawScore(ctx, score) {
+    ctx.font = '58px Bungee Shade';
+    ctx.fillText(score, this.dimensions.width/2 - 20, 100);
   }
 
   update(){
     this.level.movePipes();
-    this.bird.update(this.frame, this.frames);
+    this.birdUpdate();
+    this.scoreUpdate();
+  }
+
+  birdUpdate() {
+    this.frame += this.frames % 5 === 0 ? 1 : 0;
+    this.frame = this.frame % this.bird.animation.length;
+
+    this.bird.move();
+  }
+
+  scoreUpdate() {
+    let birdPos = this.bird.getBounds()[0][0];
+    let firstPipe = this.level.pipes[0]["pos"];
+    if(birdPos === firstPipe ){
+      this.currentScore++;
+    }
   }
 
   loop(){
-    this.update();
-    this.draw();
-    this.frames++;
-    requestAnimationFrame(this.loop.bind(this));
+    if(!this.gameOver()){
+      this.update();
+      this.draw();
+      this.frames++;
+      requestAnimationFrame(this.loop.bind(this));
+    } 
   }
 
   restart() {
@@ -73,24 +86,7 @@ export default class FlappyBird {
 
     this.level = new Level(this.dimensions);
     this.bird = new Bird(this.dimensions);
-    // this.animate();
     this.loop();
   }
-
-  printScore(ctx){
-    ctx.font = '48px serif';
-    ctx.fillText(`${this.currentScore}`, 10, 50);
-  }
-
-  // play() {
-  //   this.running = true;
-  //   // this.animate();
-  //   this.loop();
-
-  //   if(this.level.pastPipe(this.bird.getBounds())) {
-  //     this.currentScore++;
-  //   }
-  }
-
 
 }

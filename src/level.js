@@ -1,6 +1,6 @@
 const CONSTANTS = {
   DISTANCE: 220,
-  GAP: 150,
+  GAP: 175,
   PIPE_WIDTH: 80,
   PLAYABLE: 640,
   MIN_PIPE_HEIGHT: 50,
@@ -51,8 +51,10 @@ export default class Level {
   movePipes(){
     this.pipes.forEach( (pipe) => {
       pipe["pos"] -= CONSTANTS.PIPE_SPEED;
-      if(pipe["pos"] === 0) {
-        this.pipes.unshift();
+
+      //rotate pipe once moves off the screen
+      if( pipe["pos"] === 0) {
+        this.pipes.shift();
         this.generatePipe();
       }
     })
@@ -82,12 +84,6 @@ export default class Level {
     background.src = "./images/background-night.png";
     ctx.drawImage(background, 0, 0, this.dimensions.width, this.dimensions.height);
   }
-
-  // animate(ctx) {
-  //   this.drawBackground(ctx);
-  //   this.drawPipes(ctx);
-  //   this.movePipes();
-  // }
 
   collideWith(birdBounds) {
     for(let i = 0; i < this.pipes.length; i++) {
