@@ -5,7 +5,7 @@ const CONSTANTS = {
   PLAYABLE: 640,
   MIN_PIPE_HEIGHT: 50,
   PIPE_BETWEEN_DIST: 220,
-  PIPE_SPEED: 2,
+  PIPE_SPEED: 2.5,
   INITIAL_PIPE_POS: 500, 
 }
 
@@ -53,7 +53,7 @@ export default class Level {
       pipe["pos"] -= CONSTANTS.PIPE_SPEED;
 
       //rotate pipe once moves off the screen
-      if( pipe["pos"] === 0) {
+      if( pipe["pos"] + CONSTANTS.PIPE_WIDTH === 0) {
         this.pipes.shift();
         this.generatePipe();
       }

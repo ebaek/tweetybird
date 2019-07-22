@@ -13,6 +13,7 @@ export default class TweetyBird {
     this.frames = 0;
 
     this.restartButton = { x: 200, y: 250, width: 90, height: 50 }
+    this.canvas = canvas;
 
     this.restart();
     this.clickListener();
@@ -45,7 +46,7 @@ export default class TweetyBird {
   }
 
   clickListener() {
-    debugger
+    // debugger
     this.ctx.canvas.addEventListener('click', (evt) => {
       const mousePos = this.getMousePos(evt);
 
@@ -101,10 +102,9 @@ export default class TweetyBird {
     } else {
       this.drawGameOver();
     }
-    requestAnimationFrame(this.loop.bind(this));
+    this.animation = requestAnimationFrame(this.loop.bind(this));
   }
 
-  // test this 
   drawGameOver() {
     //white background, blue border box
     this.ctx.strokeStyle = "#71C5CF";
@@ -125,14 +125,17 @@ export default class TweetyBird {
     this.ctx.drawImage(restartButton, this.restartButton["x"], this.restartButton["y"], this.restartButton["width"], this.restartButton["height"]);
   }
 
+  // fix restart after game over 
   restart() {
     this.ctx.clearRect(0, 0, this.dimensions.width, this.dimensions.height);
     this.running = true;
-    this.currentScore = 0;
 
-    debugger
     this.level = new Level(this.dimensions);
     this.bird = new Bird(this.dimensions);
+
+    cancelAnimationFrame(this.animation)
+
+    this.loop();
   }
 
 }

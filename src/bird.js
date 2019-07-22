@@ -32,6 +32,7 @@ export default class Bird {
     }
 
     move() {
+        // console.log('velocity: ', this.velocity);
         // position of bird increases by current velocity
         this.pos_y += this.velocity;
 
