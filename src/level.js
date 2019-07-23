@@ -6,7 +6,10 @@ const CONSTANTS = {
   MIN_PIPE_HEIGHT: 50,
   PIPE_BETWEEN_DIST: 220,
   PIPE_SPEED: 2.5,
-  INITIAL_PIPE_POS: 700, 
+  INITIAL_PIPE_POS: 700,
+  BASE_HEIGHT: 100,
+  BASE_POS: 550,
+  BASE_SPEED: 2, 
 }
 
 export default class Level {
@@ -22,6 +25,9 @@ export default class Level {
     this.pipes = [{pos: firstPipePos, height: this.setPipeHeight()}, 
       {pos: secondPipePos, height: this.setPipeHeight()}, 
       {pos: thirdPipePos, height: this.setPipeHeight()}]
+    
+    // set of base 
+    this.bases = [0, this.dimensions.width, this.dimensions.width * 2];
   }
 
   drawPipePair(ctx, pipePos, height) {    
@@ -79,9 +85,31 @@ export default class Level {
     return height;
   }
 
+  moveBases() {
+    for(let i = 0; i < this.bases.length; i++) {
+      this.bases[i] -= CONSTANTS.BASE_SPEED;
+
+      if(this.bases[i] + this.dimensions.width === 0) {
+        this.bases.shift();
+        this.bases.push(this.bases[this.bases.length - 1] + this.dimensions.width);
+      }
+    }
+  }
+
+  drawBases(ctx) {
+    const base = new Image();
+    base.src = "./images/base.png"
+
+    this.bases.forEach( (basePos) => {
+      ctx.drawImage(base, basePos, 550, this.dimensions.width, CONSTANTS.BASE_HEIGHT);
+    })
+    
+  }
+
   drawBackground(ctx) {
     const background = new Image();
     background.src = "./images/background-night.png";
+    
     ctx.drawImage(background, 0, 0, this.dimensions.width, this.dimensions.height);
   }
 

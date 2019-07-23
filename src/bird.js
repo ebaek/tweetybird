@@ -12,8 +12,8 @@ const CONSTANTS = {
 export default class Bird {
     constructor(dimensions) {
         this.dimensions = dimensions;
-        this.pos_x = this.dimensions.width / 4;
-        this.pos_y = this.dimensions.height / 2;
+        this.pos_x = this.dimensions.width * (0.25);
+        this.pos_y = this.dimensions.height * (0.38);
         this.velocity = 0;
 
         this.birdSprite = new Image();
@@ -25,8 +25,9 @@ export default class Bird {
     }
 
     drawBird(ctx, frame){
-        let bird = this.animation[frame];
         ctx.save();
+        let bird = this.animation[frame];
+        
         ctx.drawImage(this.birdSprite, bird["sX"], bird["sY"], CONSTANTS.SPRITE_WIDTH, CONSTANTS.SPRITE_HEIGHT, this.pos_x, this.pos_y, CONSTANTS.BIRD_WIDTH, CONSTANTS.BIRD_HEIGHT);
         ctx.restore();
     }

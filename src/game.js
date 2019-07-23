@@ -12,6 +12,8 @@ export default class TweetyBird {
     this.frame = 0
     this.frames = 0;
 
+    this.initialGame = true;
+
     this.restartButton = { x: 200, y: 250, width: 90, height: 50 }
     this.canvas = canvas;
 
@@ -20,13 +22,7 @@ export default class TweetyBird {
   }
 
   gameOver() {
-    if (this.level.gameOver(this.bird.getBounds())){
-      this.running = false;
-      // this.currentScore = 0;
-      return true;
-    } else {
-      return false;
-    }
+    return this.level.gameOver(this.bird.getBounds()) ? true : false;
   }
 
   click() {
@@ -52,13 +48,13 @@ export default class TweetyBird {
       if (this.isInside(mousePos, this.restartButton) && this.gameOver()) {
         this.restart();
       } else {
+        if (this.initialGame === true) this.initialGame = false;
         this.click();
       }
     }, false);
   }
 
   draw(){
-    this.level.drawBackground(this.ctx);
     this.level.drawPipes(this.ctx);
     this.bird.drawBird(this.ctx, this.frame);
     this.drawScore(this.ctx, this.currentScore);
@@ -72,14 +68,13 @@ export default class TweetyBird {
   update(){
     this.level.movePipes();
     this.birdUpdate();
+    this.bird.move();
     this.scoreUpdate();
   }
 
   birdUpdate() {
     this.frame += this.frames % 5 === 0 ? 1 : 0;
     this.frame = this.frame % this.bird.animation.length;
-
-    this.bird.move();
   }
 
   scoreUpdate() {
@@ -93,14 +88,31 @@ export default class TweetyBird {
   }
 
   loop(){
-    if(!this.gameOver()){
+    // draw background and score
+    
+    this.level.drawBackground(this.ctx);
+
+    //draw base
+    this.level.moveBases();
+    this.level.drawBases(this.ctx);
+
+    if(!this.gameOver() && !this.initialGame){
       this.update();
       this.draw();
       this.frames++;
-    } else {
+    } else if (this.gameOver()) {
       this.drawGameOver();
+    } else if (this.initialGame) {
+      this.initialGameLoop();
+      this.frames++;
     }
     this.animation = requestAnimationFrame(this.loop.bind(this));
+  }
+
+  initialGameLoop(){
+    this.drawScore(this.ctx, this.currentScore);
+    this.bird.drawBird(this.ctx, this.frame);
+    this.birdUpdate();
   }
 
   drawGameOver() {
@@ -127,10 +139,9 @@ export default class TweetyBird {
     this.ctx.fillText(this.currentScore, this.dimensions.width / 2 - 20, 200);
   }
 
-  // fix restart after game over 
   restart() {
     this.ctx.clearRect(0, 0, this.dimensions.width, this.dimensions.height);
-    this.running = true;
+    // this.running = true;
 
     this.level = new Level(this.dimensions);
     this.bird = new Bird(this.dimensions);
