@@ -2,14 +2,14 @@ const CONSTANTS = {
   DISTANCE: 220,
   GAP: 175,
   PIPE_WIDTH: 80,
-  PLAYABLE: 640,
+  PIPE_HEIGHT: 400,
+  PLAYABLE: 550,
   MIN_PIPE_HEIGHT: 50,
   PIPE_BETWEEN_DIST: 220,
   PIPE_SPEED: 2.5,
   INITIAL_PIPE_POS: 700,
   BASE_HEIGHT: 100,
   BASE_POS: 550,
-  BASE_SPEED: 2, 
 }
 
 export default class Level {
@@ -37,15 +37,12 @@ export default class Level {
     const pipe2 = new Image();
     pipe2.src = "./images/pipe-green1.png";
 
-    //draw top pipe
-    ctx.drawImage(pipe1, pipePos, 0, CONSTANTS.PIPE_WIDTH, height);
+    ctx.drawImage(pipe1, pipePos, height - CONSTANTS.PIPE_HEIGHT, CONSTANTS.PIPE_WIDTH, CONSTANTS.PIPE_HEIGHT);
     
     //draw bottom pipe
     const secondPipePosition = CONSTANTS.GAP + height;
-    // ctx.drawImage(pipe2, 0, 0, 52, 320, secondPipePosition, this.dimensions.height - height, CONSTANTS.PIPE_WIDTH, height);
 
-    //NOTE: fix pipe dimension (cropped)
-    ctx.drawImage(pipe2, pipePos, secondPipePosition, CONSTANTS.PIPE_WIDTH, CONSTANTS.PLAYABLE - secondPipePosition);
+    ctx.drawImage(pipe2, pipePos, secondPipePosition, CONSTANTS.PIPE_WIDTH, CONSTANTS.PIPE_HEIGHT);
   }
 
   drawPipes(ctx){
@@ -87,7 +84,7 @@ export default class Level {
 
   moveBases() {
     for(let i = 0; i < this.bases.length; i++) {
-      this.bases[i] -= CONSTANTS.BASE_SPEED;
+      this.bases[i] -= CONSTANTS.PIPE_SPEED;
 
       if(this.bases[i] + this.dimensions.width === 0) {
         this.bases.shift();
@@ -103,7 +100,6 @@ export default class Level {
     this.bases.forEach( (basePos) => {
       ctx.drawImage(base, basePos, 550, this.dimensions.width, CONSTANTS.BASE_HEIGHT);
     })
-    
   }
 
   drawBackground(ctx) {

@@ -1,7 +1,7 @@
 
 const CONSTANTS = {
-    BIRD_WIDTH: 100,
-    BIRD_HEIGHT: 75,
+    BIRD_WIDTH: 90,
+    BIRD_HEIGHT: 70,
     GRAVITY: 0.4,
     FLAP_VELOCITY: -6,
     TERMINAL_VEL: 12,

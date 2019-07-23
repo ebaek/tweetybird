@@ -57,6 +57,7 @@ export default class TweetyBird {
   draw(){
     this.level.drawPipes(this.ctx);
     this.bird.drawBird(this.ctx, this.frame);
+    this.level.drawBases(this.ctx);
     this.drawScore(this.ctx, this.currentScore);
   }
 
@@ -67,6 +68,7 @@ export default class TweetyBird {
 
   update(){
     this.level.movePipes();
+    this.level.moveBases();
     this.birdUpdate();
     this.bird.move();
     this.scoreUpdate();
@@ -88,30 +90,32 @@ export default class TweetyBird {
   }
 
   loop(){
-    // draw background and score
-    
+    // draw background 
     this.level.drawBackground(this.ctx);
 
-    //draw base
-    this.level.moveBases();
-    this.level.drawBases(this.ctx);
-
     if(!this.gameOver() && !this.initialGame){
-      this.update();
-      this.draw();
+      if (!this.initialGame){
+        this.update();
+        this.draw();
+      } else {
+        this.initialGameLoop();
+      }
       this.frames++;
-    } else if (this.gameOver()) {
+    } else {
+      this.level.moveBases();
+      this.level.drawBases(this.ctx);
       this.drawGameOver();
-    } else if (this.initialGame) {
-      this.initialGameLoop();
-      this.frames++;
-    }
+    } 
     this.animation = requestAnimationFrame(this.loop.bind(this));
   }
 
   initialGameLoop(){
     this.drawScore(this.ctx, this.currentScore);
     this.bird.drawBird(this.ctx, this.frame);
+
+    this.level.moveBases();
+    this.level.drawBases(this.ctx);
+
     this.birdUpdate();
   }
 
