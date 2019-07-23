@@ -22,7 +22,7 @@ export default class TweetyBird {
   gameOver() {
     if (this.level.gameOver(this.bird.getBounds())){
       this.running = false;
-      this.currentScore = 0;
+      // this.currentScore = 0;
       return true;
     } else {
       return false;
@@ -55,7 +55,6 @@ export default class TweetyBird {
         this.click();
       }
     }, false);
-
   }
 
   draw(){
@@ -137,6 +136,7 @@ export default class TweetyBird {
     this.bird = new Bird(this.dimensions);
 
     cancelAnimationFrame(this.animation)
+    this.currentScore = 0;
 
     this.loop();
   }

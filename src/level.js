@@ -6,7 +6,7 @@ const CONSTANTS = {
   MIN_PIPE_HEIGHT: 50,
   PIPE_BETWEEN_DIST: 220,
   PIPE_SPEED: 2.5,
-  INITIAL_PIPE_POS: 500, 
+  INITIAL_PIPE_POS: 700, 
 }
 
 export default class Level {
