@@ -2,7 +2,7 @@
 const CONSTANTS = {
     BIRD_WIDTH: 90,
     BIRD_HEIGHT: 70,
-    GRAVITY: 0.4,
+    GRAVITY: 0.37,
     FLAP_VELOCITY: -6,
     TERMINAL_VEL: 12,
     SPRITE_WIDTH: 929,
@@ -54,7 +54,10 @@ export default class Bird {
         //add the beak?
         const beak = [this.pos_x + CONSTANTS.BIRD_WIDTH, this.pos_y * (0.5)];
 
-        const topLeft = [this.pos_x, this.pos_y];
+        // const topRight = [this.pos_x + (CONSTANTS.BIRD_WIDTH * 0.8), this.pos_y];
+        // const bottomRight = [this.pos_x + (CONSTANTS.BIRD_WIDTH * 0.8), this.pos_y + CONSTANTS.BIRD_HEIGHT];
+
+        const topLeft = [this.pos_x, this.pos_y + CONSTANTS.BIRD_HEIGHT];
         const bottomLeft = [this.pos_x, this.pos_y + CONSTANTS.BIRD_HEIGHT];
 
         return [topRight, bottomRight];
