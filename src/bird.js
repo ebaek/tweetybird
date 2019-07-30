@@ -48,11 +48,16 @@ export default class Bird {
     }
 
     getBounds() {
-        //calibrate boundaries to irregular shape of bird
-        const topRight = [this.pos_x + CONSTANTS.BIRD_WIDTH - 10, this.pos_y + 2];
-        const bottomMid = [this.pos_x + CONSTANTS.BIRD_WIDTH - 10, this.pos_y + CONSTANTS.BIRD_HEIGHT - 15];
+        const topRight = [this.pos_x + CONSTANTS.BIRD_WIDTH, this.pos_y];
+        const bottomRight = [this.pos_x + CONSTANTS.BIRD_WIDTH, this.pos_y + CONSTANTS.BIRD_HEIGHT];
 
-        return [topRight, bottomMid];
+        //add the beak?
+        const beak = [this.pos_x + CONSTANTS.BIRD_WIDTH, this.pos_y * (0.5)];
+
+        const topLeft = [this.pos_x, this.pos_y];
+        const bottomLeft = [this.pos_x, this.pos_y + CONSTANTS.BIRD_HEIGHT];
+
+        return [topRight, bottomRight];
     }
 }
 

@@ -1,11 +1,16 @@
 import Bird from './bird';
 import Level from './level';
 
+const CONSTANTS = {
+  RST_WIDTH: 90,
+  RST_HEIGHT: 50,
+}
+
 
 export default class TweetyBird {
   constructor(canvas){
     this.ctx = canvas.getContext("2d");
-    this.dimensions = { width: canvas.width, height: canvas.height };
+    this.dimensions = { width: canvas.width, height: canvas.height - 100 };
 
     this.currentScore = 0;
 
@@ -14,7 +19,7 @@ export default class TweetyBird {
 
     this.initialGame = true;
 
-    this.restartButton = { x: 200, y: 250, width: 90, height: 50 }
+    this.restartButton = { x: this.dimensions["width"]/2 - CONSTANTS.RST_WIDTH/2, y: this.dimensions.height * (0.43), width: CONSTANTS.RST_WIDTH, height: CONSTANTS.RST_HEIGHT }
     this.canvas = canvas;
 
     this.restart();
@@ -80,6 +85,7 @@ export default class TweetyBird {
   }
 
   scoreUpdate() {
+    debugger
     let birdPos = this.bird.getBounds()[0][0];
 
     //update the score when the bird flies a bit past the start of the pipe
@@ -93,7 +99,7 @@ export default class TweetyBird {
     // draw background 
     this.level.drawBackground(this.ctx);
 
-    if(!this.gameOver() && !this.initialGame){
+    if(!this.gameOver()){
       if (!this.initialGame){
         this.update();
         this.draw();
@@ -124,14 +130,19 @@ export default class TweetyBird {
     this.ctx.strokeStyle = "#71C5CF";
     this.ctx.fillStyle = 'white';
     this.ctx.lineWidth = 10;
-    this.ctx.rect(37, 50, this.dimensions.width - 60, this.dimensions.height/2 - 50);
+    this.ctx.rect(37, 70, this.dimensions.width - 60, this.dimensions.height/2 - 50);
     this.ctx.stroke();
     this.ctx.fill();
+
+
+    this.ctx.moveTo(this.dimensions.width / 2, 20);
+    this.ctx.textAlign = "center";
 
     //game over
     this.ctx.font = '58px Bungee Shade';
     this.ctx.fillStyle = 'black';
-    this.ctx.fillText("Game Over", 45, 120);
+    this.ctx.fillText("Game Over", this.dimensions.width / 2, 120);
+
 
     //restart button
     const restartButton = new Image();
@@ -140,7 +151,9 @@ export default class TweetyBird {
 
     //draw final score
     this.ctx.font = '58px Bungee Shade';
-    this.ctx.fillText(this.currentScore, this.dimensions.width / 2 - 20, 200);
+    
+    // this.ctx.fillText(this.currentScore, this.dimensions.width / 2 - 20, 200);
+    this.ctx.fillText(this.currentScore, this.dimensions.width/2, 200);
   }
 
   restart() {

@@ -4,12 +4,11 @@ const CONSTANTS = {
   PIPE_WIDTH: 80,
   PIPE_HEIGHT: 400,
   PLAYABLE: 550,
-  MIN_PIPE_HEIGHT: 50,
+  MIN_PIPE_HEIGHT: 120,
   PIPE_BETWEEN_DIST: 220,
   PIPE_SPEED: 2.5,
   INITIAL_PIPE_POS: 700,
   BASE_HEIGHT: 100,
-  BASE_POS: 550,
 }
 
 export default class Level {
@@ -40,7 +39,7 @@ export default class Level {
     ctx.drawImage(pipe1, pipePos, height - CONSTANTS.PIPE_HEIGHT, CONSTANTS.PIPE_WIDTH, CONSTANTS.PIPE_HEIGHT);
     
     //draw bottom pipe
-    const secondPipePosition = CONSTANTS.GAP + height;
+    const secondPipePosition = height + CONSTANTS.GAP;
 
     ctx.drawImage(pipe2, pipePos, secondPipePosition, CONSTANTS.PIPE_WIDTH, CONSTANTS.PIPE_HEIGHT);
   }
@@ -73,6 +72,7 @@ export default class Level {
   setPipeHeight(){
     let height = Math.random(0,1) * CONSTANTS.PLAYABLE;
 
+    // generate for playable - gap instead of below
     if(height < CONSTANTS.MIN_PIPE_HEIGHT) {
       height = CONSTANTS.MIN_PIPE_HEIGHT;
     } else if(height > (CONSTANTS.PLAYABLE - CONSTANTS.MIN_PIPE_HEIGHT - CONSTANTS.GAP)){
@@ -98,7 +98,7 @@ export default class Level {
     base.src = "./images/base.png"
 
     this.bases.forEach( (basePos) => {
-      ctx.drawImage(base, basePos, 550, this.dimensions.width, CONSTANTS.BASE_HEIGHT);
+      ctx.drawImage(base, basePos, this.dimensions.height, this.dimensions.width, CONSTANTS.BASE_HEIGHT);
     })
   }
 
@@ -117,19 +117,34 @@ export default class Level {
   }
 
   collideWithPipe(birdBounds, i) {
-    const birdTopLeft = birdBounds[0];
+    debugger
+    const birdTopRight = birdBounds[0];
     const birdBottomRight = birdBounds[1];
+
+    // const birdTopLeft = birdBounds[2];
+    // const birdBottomLeft = birdBounds[3];
+
+    // const beak = birdBounds[4]
 
     const topPipeHeightBounds = [0, this.pipes[i]["height"]];
     const pipeWidthBounds = [this.pipes[i]["pos"], this.pipes[i]["pos"] + CONSTANTS.PIPE_WIDTH];
     const bottomHeightBounds = [this.pipes[i]["height"] + CONSTANTS.GAP, this.dimensions.height];
 
-    if (birdTopLeft[0] >= pipeWidthBounds[0] && birdTopLeft[0] <= pipeWidthBounds[1]) {
-      if (birdTopLeft[1] <= topPipeHeightBounds[1] || birdBottomRight[1] >= bottomHeightBounds[0]) {
+
+    //NOTE: FIX THE BOUNDS
+    // debugger 
+    if (this.between(birdTopRight[0], pipeWidthBounds) && this.between(birdBottomRight[0], pipeWidthBounds)) {
+      if (birdTopRight[1] <= topPipeHeightBounds[1] || birdBottomRight[1] >= bottomHeightBounds[0]) {
+        // if(this.between(birdTopRight[1], topPipeHeightBounds) || this.between(birdBottomRight[1], bottomHeightBounds)) {
         return true;
       }
     }
+
     return false;
+  }
+
+  between(pos, bounds){
+    return pos >= bounds[0] && pos <= bounds[1];
   }
 
   pastPipe(birdBounds) {
