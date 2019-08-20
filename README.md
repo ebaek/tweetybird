@@ -9,7 +9,7 @@ A Flappy Bird inspired clone using Javascript, Canvas, and HTML5.
 ## Background and Overview
   ### Motivation: 
   * Flappy Bird will always stand out to me as a childhood favorite. I decided to clone the game because I wanted to learn 
-  more about sprites and how to account for collisions. This was a super fun project and I hope to write more fun games in the 
+  more about sprites and how to account for collisions. This was a super fun project and I hope to write more games in the 
   future! 
   
   ### Goals 
