@@ -1,8 +1,10 @@
 # tweetybird
 A Flappy Bird inspired clone using Javascript, Canvas, and HTML5. 
 
-[Play Here] https://ebaek.github.io/tweetybird/)
+[View Live Site Here](https://ebaek.github.io/tweetybird/)
 ---
+
+![Image](images/sample-game.gif)
 
 ## Background and Overview
   ### Motivation: 
@@ -18,8 +20,6 @@ A Flappy Bird inspired clone using Javascript, Canvas, and HTML5.
   * Vanilla Javascript for overall structure and create an interactive game 
   * HTML5 Canvas to render game components (bird, background, pipes)
   * Webpack to bundle scripts into a single source
-
-![Image](images/sample-game.gif)
 
 ## Future Features
 * Rankings: store scores in Amazon firebase 
