@@ -22,5 +22,5 @@ A Flappy Bird inspired clone using Javascript, Canvas, and HTML5.
   * Webpack to bundle scripts into a single source
 
 ## Future Features
-* Rankings: store scores in Amazon firebase 
+* Rankings: store scores in AWS or Google Firebase 
 * Sound effects: mimic bird movements and collisions 
