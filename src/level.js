@@ -117,14 +117,8 @@ export default class Level {
   }
 
   collideWithPipe(birdBounds, i) {
-    debugger
     const birdTopRight = birdBounds[0];
     const birdBottomRight = birdBounds[1];
-
-    // const birdTopLeft = birdBounds[2];
-    // const birdBottomLeft = birdBounds[3];
-
-    // const beak = birdBounds[4]
 
     const topPipeHeightBounds = [0, this.pipes[i]["height"]];
     const pipeWidthBounds = [this.pipes[i]["pos"], this.pipes[i]["pos"] + CONSTANTS.PIPE_WIDTH];
@@ -132,7 +126,6 @@ export default class Level {
 
 
     //NOTE: FIX THE BOUNDS
-    // debugger 
     if (this.between(birdTopRight[0], pipeWidthBounds) && this.between(birdBottomRight[0], pipeWidthBounds)) {
       if (birdTopRight[1] <= topPipeHeightBounds[1] || birdBottomRight[1] >= bottomHeightBounds[0]) {
         // if(this.between(birdTopRight[1], topPipeHeightBounds) || this.between(birdBottomRight[1], bottomHeightBounds)) {

@@ -10,11 +10,50 @@
   user-select: none;
 }
 
+body {
+  margin-top: 5%;
+  background-color: black;
+  height: 100%;
+}
+
 .canvas-container{
+  margin-top: 2%;
   display: flex;
   justify-content: center;
 }
 
-body {
-  background-color: black;
+footer {
+    width: 100%;
+    position: absolute;
+    bottom: 5%;
+}
+
+.personal-div {
+    display: flex;
+    justify-content: center;
+}
+
+.personal-div a {
+    filter: invert(100%);
+    margin-left: 1%;
+    margin-right: 1%;
+}
+
+.personal-div a img {
+    width: 30px;
+}
+
+.personal-div a img:hover {
+    filter: hue-rotate(180deg);
+}
+
+.estherbaek {
+    font-family: 'Electrolize', sans-serif;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    color: whitesmoke;
+    margin: 0;
+    margin-top: 5px;
+    padding: 0;
 }

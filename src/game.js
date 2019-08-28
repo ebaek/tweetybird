@@ -85,7 +85,6 @@ export default class TweetyBird {
   }
 
   scoreUpdate() {
-    debugger
     let birdPos = this.bird.getBounds()[0][0];
 
     //update the score when the bird flies a bit past the start of the pipe
