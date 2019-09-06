@@ -14,6 +14,7 @@ body {
   margin-top: 2.5%;
   background-color: black;
   height: 100%;
+  margin-bottom: 1%;
 }
 
 .canvas-container{
@@ -23,6 +24,7 @@ body {
 }
 
 footer {
+    margin-top: 1%;
     width: 100%;
     position: absolute;
     bottom: 5%;
