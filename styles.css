@@ -18,19 +18,14 @@ body {
 }
 
 .canvas-container{
+  display: block;
   margin-top: 2%;
   display: flex;
   justify-content: center;
 }
 
-footer {
-    margin-top: 1%;
-    width: 100%;
-    position: absolute;
-    bottom: 5%;
-}
-
 .personal-div {
+    margin-top: 3%;
     display: flex;
     justify-content: center;
 }
